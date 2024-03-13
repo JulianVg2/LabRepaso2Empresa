@@ -8,24 +8,22 @@ namespace LabRepaso2Empresa
 {
     internal class AlquilerInfo
     {
-        int nit;
-        string nombreCliente;
-        string placaVehiculo;
-        string marcaVehiculo;
-        int modeloVehiculo;
-        string colorVehiculo;
-        DateTime fechaDevolucion;
-        decimal kilometrosrecorridos;
-        decimal totalPagar;
+        string nombre;
+        string placa;
+        int modelo;
+        string marca;
+        string color;
+        decimal precioKm;
+        DateTime fechadevolucion;
+        decimal totalpagar;
 
-        public string NombreCliente { get => nombreCliente; set => nombreCliente = value; }
-        public string PlacaVehiculo { get => placaVehiculo; set => placaVehiculo = value; }
-        public string MarcaVehiculo { get => marcaVehiculo; set => marcaVehiculo = value; }
-        public int ModeloVehiculo { get => modeloVehiculo; set => modeloVehiculo = value; }
-        public string ColorVehiculo { get => colorVehiculo; set => colorVehiculo = value; }
-        public DateTime FechaDevolucion { get => fechaDevolucion; set => fechaDevolucion = value; }
-        public decimal TotalPagar { get => totalPagar; set => totalPagar = value; }
-        public decimal Kilometrosrecorridos { get => kilometrosrecorridos; set => kilometrosrecorridos = value; }
-        public int Nit { get => nit; set => nit = value; }
+        public string Nombre { get => nombre; set => nombre = value; }
+        public string Placa { get => placa; set => placa = value; }
+        public int Modelo { get => modelo; set => modelo = value; }
+        public string Marca { get => marca; set => marca = value; }
+        public string Color { get => color; set => color = value; }
+        public decimal PrecioKm { get => precioKm; set => precioKm = value; }
+        public DateTime Fechadevolucion { get => fechadevolucion; set => fechadevolucion = value; }
+        public decimal Totalpagar { get => totalpagar; set => totalpagar = value; }
     }
 }

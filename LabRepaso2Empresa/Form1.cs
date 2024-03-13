@@ -16,6 +16,7 @@ namespace LabRepaso2Empresa
         List<Vehiculo> vehiculos = new List<Vehiculo>();
         List<Clientes> clientes = new List<Clientes>();
         List<AlquilerInfo> alquileresInfo = new List<AlquilerInfo>();
+        List<alquileres> alquileres = new List<alquileres>();
 
         public Form1()
         {
@@ -91,58 +92,78 @@ namespace LabRepaso2Empresa
 
         }
 
-        public void CargarAlquileres()
+        public void LeerAlquileres()
         {
             string fileName = "Alquiler.txt";
             FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             StreamReader reader = new StreamReader(stream);
             while (reader.Peek() > -1)
             {
-                AlquilerInfo alquiler = new AlquilerInfo();
-                alquiler.NombreCliente = reader.ReadLine();
-                alquiler.Nit = int.Parse(reader.ReadLine()); 
-                alquiler.PlacaVehiculo = reader.ReadLine();
-                alquiler.MarcaVehiculo = reader.ReadLine();
-                alquiler.ModeloVehiculo = int.Parse(reader.ReadLine());
-                alquiler.ColorVehiculo = reader.ReadLine();
-                alquiler.Kilometrosrecorridos = decimal.Parse(reader.ReadLine());
+                alquileres alquiler = new alquileres();
+                alquiler.Nit = int.Parse(reader.ReadLine());
+                alquiler.Placa = reader.ReadLine();
+                alquiler.FechaAlquiler = DateTime.Parse(reader.ReadLine());
                 alquiler.FechaDevolucion = DateTime.Parse(reader.ReadLine());
                 alquiler.Kilometrosrecorridos = decimal.Parse(reader.ReadLine());
 
-                // Busca el cliente con el NIT correspondiente
-                Clientes cliente = clientes.FirstOrDefault(c => c.Nit == alquiler.Nit);
-                // Busca el vehículo con la placa correspondiente
-                Vehiculo vehiculo = vehiculos.FirstOrDefault(v => v.Placa == alquiler.PlacaVehiculo);
-
-                if (cliente != null && vehiculo != null)
-                {
-                    // Total a pagar
-                    decimal totalPagar = alquiler.Kilometrosrecorridos * vehiculo.PrecioKm;
-
-                    // Crea un objeto AlquilerInfo con la información requerida
-                    AlquilerInfo alquilerInfo = new AlquilerInfo
-                    {
-                        NombreCliente = cliente.Nombre,
-                        PlacaVehiculo = vehiculo.Placa,
-                        MarcaVehiculo = vehiculo.Marca,
-                        ModeloVehiculo = vehiculo.Modelo,
-                        ColorVehiculo = vehiculo.Color,
-                        FechaDevolucion = alquiler.FechaDevolucion,
-                        TotalPagar = totalPagar
-                    };
-
-                    // Agrega el objeto AlquilerInfo a la lista de alquileres para mostrar
-                    alquileresInfo.Add(alquilerInfo);
-                }
+                alquileres.Add(alquiler);
             }
             reader.Close();
+
+
         }
-        public void MostrarAlquileresInfo()
+
+        public void MostrarDatos()
         {
+
             dataGridViewDatos.DataSource = null;
             dataGridViewDatos.DataSource = alquileresInfo;
             dataGridViewDatos.Refresh();
         }
+
+        public void CargarAlquileres()
+        {
+            alquileresInfo.Clear();
+            foreach (alquileres alquiler in alquileres)
+            {
+                Clientes cliente = clientes.FirstOrDefault(c => c.Nit == alquiler.Nit);
+                if (cliente != null)
+                {
+
+                    Vehiculo vehiculo = vehiculos.FirstOrDefault(v => v.Placa == alquiler.Placa);
+                    if (vehiculo != null)
+                    {
+
+                        // Calcular el total a pagar
+
+                        decimal totalPagar = alquiler.Kilometrosrecorridos * vehiculo.PrecioKm;
+
+
+                        AlquilerInfo reporte = new AlquilerInfo
+                        {
+                            Nombre = cliente.Nombre,
+                            Placa = vehiculo.Placa,
+                            Modelo = vehiculo.Modelo,
+                            Marca = vehiculo.Marca,
+                            Color = vehiculo.Color,
+                            PrecioKm = vehiculo.PrecioKm,
+                            Fechadevolucion = alquiler.FechaDevolucion,
+                            Totalpagar = totalPagar,
+                        };
+                        alquileresInfo.Add(reporte);
+
+
+                    }
+
+
+
+
+                }
+
+            }
+            MostrarDatos();
+        }
+       
 
 
 
@@ -166,8 +187,9 @@ namespace LabRepaso2Empresa
 
         private void btnLeer_Click(object sender, EventArgs e)
         {
+            LeerAlquileres();
             CargarAlquileres();
-            MostrarAlquileresInfo();
+            
         }
     }
 }
