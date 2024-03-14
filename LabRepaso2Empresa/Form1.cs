@@ -66,22 +66,25 @@ namespace LabRepaso2Empresa
         }
         public void CargarClientes()
         {
-            string fileName = "Clientes.txt";
-            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            StreamReader reader = new StreamReader(stream);
-            while (reader.Peek() > -1) 
+            if (clientes.Count == 0)
             {
-                Clientes clientess = new Clientes();
-                clientess.Nit = int.Parse(reader.ReadLine());
-                clientess.Nombre = reader.ReadLine();
-                clientess.Direccion = reader.ReadLine();
+                string fileName = "Clientes.txt";
+                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                StreamReader reader = new StreamReader(stream);
+                while (reader.Peek() > -1)
+                {
+                    Clientes clientess = new Clientes();
+                    clientess.Nit = int.Parse(reader.ReadLine());
+                    clientess.Nombre = reader.ReadLine();
+                    clientess.Direccion = reader.ReadLine();
 
-                clientes.Add(clientess);
+                    clientes.Add(clientess);
+
+                }
+                reader.Close();
+
 
             }
-            reader.Close();
-
-
         }
         public void MostrarClientes()
         {
@@ -115,7 +118,7 @@ namespace LabRepaso2Empresa
 
         public void MostrarDatos()
         {
-
+            
             dataGridViewDatos.DataSource = null;
             dataGridViewDatos.DataSource = alquileresInfo;
             dataGridViewDatos.Refresh();
@@ -123,7 +126,8 @@ namespace LabRepaso2Empresa
 
         public void CargarAlquileres()
         {
-            alquileresInfo.Clear();
+
+            
             foreach (alquileres alquiler in alquileres)
             {
                 Clientes cliente = clientes.FirstOrDefault(c => c.Nit == alquiler.Nit);
@@ -187,9 +191,39 @@ namespace LabRepaso2Empresa
 
         private void btnLeer_Click(object sender, EventArgs e)
         {
+
             LeerAlquileres();
             CargarAlquileres();
             
         }
+
+
+
+        public void calcularalquilermayor()
+        {
+            decimal maxKilometros = 0;
+            foreach (var alquiler in alquileres)
+            {
+                if (alquiler.Kilometrosrecorridos > maxKilometros)
+                {
+                    maxKilometros = alquiler.Kilometrosrecorridos;
+                }
+            }
+
+            // Muestra solo el valor de los kilómetros recorridos en label7
+            label7.Text = "Kilómetros recorridos del alquiler máximo: " + maxKilometros.ToString();
+
+
+            // Muestra solo el valor de los kilómetros recorridos en label7
+            label7.Text = "Kilómetros recorridos del alquiler máximo: " + maxKilometros.ToString();
+
+        }
+
+        private void btnMostrarAlquiler_Click(object sender, EventArgs e)
+        {
+            calcularalquilermayor();
+        }
+
+
     }
 }
