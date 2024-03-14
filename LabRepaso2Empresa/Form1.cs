@@ -15,7 +15,7 @@ namespace LabRepaso2Empresa
     {
         List<Vehiculo> vehiculos = new List<Vehiculo>();
         List<Clientes> clientes = new List<Clientes>();
-        List<AlquilerInfo> alquileresInfo = new List<AlquilerInfo>();
+       
         List<alquileres> alquileres = new List<alquileres>();
 
         public Form1()
@@ -116,56 +116,55 @@ namespace LabRepaso2Empresa
 
         }
 
-        public void MostrarDatos()
-        {
-            
-            dataGridViewDatos.DataSource = null;
-            dataGridViewDatos.DataSource = alquileresInfo;
-            dataGridViewDatos.Refresh();
-        }
+ 
 
         public void CargarAlquileres()
         {
+            List<AlquilerInfo> alquileresInfo = new List<AlquilerInfo>();
 
-            
-            foreach (alquileres alquiler in alquileres)
+
+            if(alquileresInfo.Count == 0)
             {
-                Clientes cliente = clientes.FirstOrDefault(c => c.Nit == alquiler.Nit);
-                if (cliente != null)
+                foreach (alquileres alquiler in alquileres)
                 {
-
-                    Vehiculo vehiculo = vehiculos.FirstOrDefault(v => v.Placa == alquiler.Placa);
-                    if (vehiculo != null)
+                    Clientes cliente = clientes.FirstOrDefault(c => c.Nit == alquiler.Nit);
+                    if (cliente != null)
                     {
 
-                        // Calcular el total a pagar
-
-                        decimal totalPagar = alquiler.Kilometrosrecorridos * vehiculo.PrecioKm;
-
-
-                        AlquilerInfo reporte = new AlquilerInfo
+                        Vehiculo vehiculo = vehiculos.FirstOrDefault(v => v.Placa == alquiler.Placa);
+                        if (vehiculo != null)
                         {
-                            Nombre = cliente.Nombre,
-                            Placa = vehiculo.Placa,
-                            Modelo = vehiculo.Modelo,
-                            Marca = vehiculo.Marca,
-                            Color = vehiculo.Color,
-                            PrecioKm = vehiculo.PrecioKm,
-                            Fechadevolucion = alquiler.FechaDevolucion,
-                            Totalpagar = totalPagar,
-                        };
-                        alquileresInfo.Add(reporte);
 
+                            // Calcular el total a pagar
+                            decimal totalPagar = alquiler.Kilometrosrecorridos * vehiculo.PrecioKm;
 
+                            AlquilerInfo reporte = new AlquilerInfo
+                            {
+                                Nombre = cliente.Nombre,
+                                Placa = vehiculo.Placa,
+                                Modelo = vehiculo.Modelo,
+                                Marca = vehiculo.Marca,
+                                Color = vehiculo.Color,
+                                PrecioKm = vehiculo.PrecioKm,
+                                Fechadevolucion = alquiler.FechaDevolucion,
+                                Totalpagar = totalPagar,
+                            };
+                            alquileresInfo.Add(reporte);
+                        }
                     }
-
-
-
-
                 }
 
+
+                dataGridViewDatos.DataSource = null;
+                dataGridViewDatos.DataSource = alquileresInfo;
+                dataGridViewDatos.Refresh();
+
+
+
             }
-            MostrarDatos();
+
+            
+           
         }
        
 
@@ -191,7 +190,7 @@ namespace LabRepaso2Empresa
 
         private void btnLeer_Click(object sender, EventArgs e)
         {
-
+            
             LeerAlquileres();
             CargarAlquileres();
             
